@@ -7,7 +7,8 @@ on:
   push: 
 
 jobs:
-  Linter:
+  
+  Black:
     runs-on: ubuntu-latest
     steps:
       - name: Realiza o Checkout
@@ -27,11 +28,62 @@ jobs:
       - name: Executa o Black
         run: poetry run black horus --check
 
+  iSort:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Realiza o Checkout
+        uses: actions/checkout@v3
+
+      - name: Instala o Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Instala o Poetry
+        uses: Gr1N/setup-poetry@v8
+
+      - name: Instala as Dependências
+        run: poetry install
+
       - name: Executa o iSort
         run: poetry run isort --check horus
+
+  Pydocstyle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Realiza o Checkout
+        uses: actions/checkout@v3
+
+      - name: Instala o Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Instala o Poetry
+        uses: Gr1N/setup-poetry@v8
+
+      - name: Instala as Dependências
+        run: poetry install
       
       - name: Executa o Pydocstyle
         run: poetry run pydocstyle app
+
+  Pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Realiza o Checkout
+        uses: actions/checkout@v3
+
+      - name: Instala o Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Instala o Poetry
+        uses: Gr1N/setup-poetry@v8
+
+      - name: Instala as Dependências
+        run: poetry install
 
       - name: Executa os Testes Unitários
         run: poetry run pytest

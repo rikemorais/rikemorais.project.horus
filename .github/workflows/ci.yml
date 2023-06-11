@@ -28,7 +28,7 @@ jobs:
         run: poetry run black horus --check
 
       - name: Executa o iSort
-        run: poetry run isort --check app
+        run: poetry run isort --check horus
       
       - name: Executa o Pydocstyle
         run: poetry run pydocstyle app

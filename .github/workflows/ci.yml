@@ -7,7 +7,7 @@ on:
   push: 
 
 jobs:
-  executa_linter:
+  Linter:
     runs-on: ubuntu-latest
     steps:
       - name: Realiza o Checkout
@@ -19,7 +19,7 @@ jobs:
           python-version: 3.9
 
       - name: Instala o Poetry
-        uses: Gr1N/setup-poetry@v4
+        uses: GrlN/setup-poetry@v4
 
       - name: Instala as Dependências
         run: poetry install
@@ -30,7 +30,7 @@ jobs:
       - name: Executa o iSort
         run: poetry run isort --check app
       
-      - name: Executa o pydocstyle
+      - name: Executa o Pydocstyle
         run: poetry run pydocstyle app
 
       - name: Executa os Testes Unitários

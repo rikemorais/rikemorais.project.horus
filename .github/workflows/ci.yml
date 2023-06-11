@@ -21,9 +21,6 @@ jobs:
       - name: Instala o Poetry
         uses: Gr1N/setup-poetry@v8
 
-      - name: Entra no Diretório
-        run: cd horus
-
       - name: Instala as Dependências
         run: poetry install
 

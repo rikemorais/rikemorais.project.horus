@@ -31,11 +31,17 @@ class DadosGenerator:
 
         :param output_file_path: Caminho do arquivo de saída.
         """
-        with codecs.open(output_file_path, "w", encoding="utf-8", errors="replace") as file:
+        with codecs.open(output_file_path, 
+                         "w", 
+                         encoding="utf-8", 
+                         errors="replace") as file:
             writer = csv.writer(file)
             writer.writerow([
-                "Fornecedor", "Marca", "Linha", "Modelo", "Material", "Polaridade", "Fotossensibilidade", "Cor",
-                "Refração", "Tecnologia", "Antirreflexo", "Esférico", "Cilíndrico", "Adição", "Diâmetro"
+                "Fornecedor", "Marca", "Linha", 
+                "Modelo", "Material", "Polaridade", 
+                "Fotossensibilidade", "Cor", "Refração", 
+                "Tecnologia", "Antirreflexo", "Esférico", 
+                "Cilíndrico", "Adição", "Diâmetro"
             ])
 
             for _ in range(1000000):
@@ -56,8 +62,9 @@ class DadosGenerator:
                 diametro = random.choice(self.diametros)
 
                 writer.writerow([
-                    fornecedor, marca, linha, modelo, material, polaridade, fotossensibilidade, cor, refracao,
-                    tecnologia, antirreflexo, esferico, cilindrico, adicao, diametro
+                    fornecedor, marca, linha, modelo, material, polaridade, 
+                    fotossensibilidade, cor, refracao, tecnologia, 
+                    antirreflexo, esferico, cilindrico, adicao, diametro
                 ])
 
 if __name__ == "__main__":

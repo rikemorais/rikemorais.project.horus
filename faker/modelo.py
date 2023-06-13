@@ -1,58 +1,65 @@
-from faker import Faker
 import random
 import csv
-import os
+import codecs
+from faker import Faker
 
-fake = Faker()
 
-fornecedores = ["Principais Fabricantes de Lentes para Óculos do Mundo"]
-marcas = [f"Marca {i}" for i in range(1, 21)]
-linhas = [f"Linha {chr(i)}" for i in range(ord('A'), ord('Z')+1)]
-modelos = [f"Modelo {i}" for i in range(1, 201)]
-materiais = [f"Material {i}" for i in range(1, 11)]
-polaridades = ["Sim", "Não"]
-fotossensibilidades = ["Sim", "Não"]
-cores = ["Vermelho", "Verde", "Azul", "Amarelo", "Preto", "Branco"]
-tecnologias = ["Digital", "Tradicional"]
-antirreflexos = ["Sim", "Não"]
-esfericos = [round(x * 0.25, 2) for x in range(-36, 65)]  # Valores entre -9.00 e +16.00 com incremento de 0.25
-cilindricos = [round(x * 0.25, 2) for x in range(-36, 1)]  # Valores entre -9.00 e 0.00 com incremento de 0.25
-adicoes = [round(x * 0.25, 2) for x in range(17)]  # Valores entre 0.00 e +4.00 com incremento de 0.25
-diametros = [50, 52, 54, 56, 58, 60]
+class DadosGenerator:
+    """
+    Classe responsável por gerar dados fictícios para um arquivo CSV.
+    """
 
-output_folder = "data"
-os.makedirs(output_folder, exist_ok=True)
-output_file = os.path.join(output_folder, "dados_lentes.csv")
+    def __init__(self):
+        self.fornecedores = ["Essilor", "Hoya", "Zeiss", "Rodenstock"]
+        self.marcas = [f"Marca {i}" for i in range(1, 21)]
+        self.linhas = [f"Linha {chr(i)}" for i in range(ord('A'), ord('Z')+1)]
+        self.modelos = [f"Modelo {i}" for i in range(1, 201)]
+        self.materiais = [f"Material {i}" for i in range(1, 11)]
+        self.polaridades = ["Sim", "Não"]
+        self.fotossensibilidades = ["Sim", "Não"]
+        self.cores = ["Cinza", "Marrom", "Verde"]
+        self.tecnologias = ["Digital", "Tradicional"]
+        self.antirreflexos = ["Sim", "Não"]
+        self.esfericos = [round(x * 0.25, 1) for x in range(-36, 65)]
+        self.cilindricos = [round(x * 0.25, 2) for x in range(-36, 1)]
+        self.adicoes = [round(x + 0.25, 2) for x in range(17)]
+        self.diametros = [70, 74, 78, 80, 85]
 
-with open(output_file, "w", newline="") as file:
-    writer = csv.writer(file)
-    writer.writerow(
-        [
-            "Fornecedor", "Marca", "Linha", "Modelo", "Material", "Polaridade", "Fotossensibilidade", "Cor",
-            "Refração", "Tecnologia", "Antirreflexo", "Esférico", "Cilíndrico", "Adição", "Diâmetro"
-        ]
-    )
+    def generate_data(self, output_file_path):
+        """
+        Gera os dados fictícios e escreve-os em um arquivo CSV.
 
-    for _ in range(100000):
-        fornecedor = random.choice(fornecedores)
-        marca = random.choice(marcas)
-        linha = random.choice(linhas)
-        modelo = random.choice(modelos)
-        material = random.choice(materiais)
-        polaridade = random.choice(polaridades)
-        fotossensibilidade = random.choice(fotossensibilidades)
-        cor = random.choice(cores)
-        refração = round(random.uniform(1.4, 1.74), 2)
-        tecnologia = random.choice(tecnologias)
-        antirreflexo = random.choice(antirreflexos)
-        esférico = random.choice(esfericos)
-        cilíndrico = random.choice(cilindricos)
-        adição = random.choice(adicoes)
-        diametro = random.choice(diametros)
+        :param output_file_path: Caminho do arquivo de saída.
+        """
+        with codecs.open(output_file_path, "w", encoding="utf-8", errors="replace") as file:
+            writer = csv.writer(file)
+            writer.writerow([
+                "Fornecedor", "Marca", "Linha", "Modelo", "Material", "Polaridade", "Fotossensibilidade", "Cor",
+                "Refração", "Tecnologia", "Antirreflexo", "Esférico", "Cilíndrico", "Adição", "Diâmetro"
+            ])
 
-        writer.writerow(
-            [
-                fornecedor, marca, linha, modelo, material, polaridade, fotossensibilidade, cor, refração,
-                tecnologia, antirreflexo, esférico, cilíndrico, adição, diametro
-            ]
-        )
+            for _ in range(1000000):
+                fornecedor = random.choice(self.fornecedores)
+                marca = random.choice(self.marcas)
+                linha = random.choice(self.linhas)
+                modelo = random.choice(self.modelos)
+                material = random.choice(self.materiais)
+                polaridade = random.choice(self.polaridades)
+                fotossensibilidade = random.choice(self.fotossensibilidades)
+                cor = random.choice(self.cores)
+                refracao = round(random.uniform(1.4, 1.74), 2)
+                tecnologia = random.choice(self.tecnologias)
+                antirreflexo = random.choice(self.antirreflexos)
+                esferico = random.choice(self.esfericos)
+                cilindrico = random.choice(self.cilindricos)
+                adicao = random.choice(self.adicoes)
+                diametro = random.choice(self.diametros)
+
+                writer.writerow([
+                    fornecedor, marca, linha, modelo, material, polaridade, fotossensibilidade, cor, refracao,
+                    tecnologia, antirreflexo, esferico, cilindrico, adicao, diametro
+                ])
+
+if __name__ == "__main__":
+    generator = DadosGenerator()
+    generator.generate_data("data/dados.csv")

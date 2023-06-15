@@ -2,7 +2,7 @@ import random
 import csv
 import codecs
 from faker import Faker
-
+import tqdm
 
 class DadosGenerator:
     """
@@ -31,20 +31,16 @@ class DadosGenerator:
 
         :param output_file_path: Caminho do arquivo de saída.
         """
-        with codecs.open(output_file_path, 
-                         "w", 
-                         encoding="utf-8", 
-                         errors="replace") as file:
+        with codecs.open(output_file_path, "w", encoding="utf-8", errors="replace") as file:
             writer = csv.writer(file)
             writer.writerow([
-                "Fornecedor", "Marca", "Linha", 
-                "Modelo", "Material", "Polaridade", 
-                "Fotossensibilidade", "Cor", "Refração", 
-                "Tecnologia", "Antirreflexo", "Esférico", 
-                "Cilíndrico", "Adição", "Diâmetro"
+                "Fornecedor", "Marca", "Linha", "Modelo", "Material", "Polaridade", 
+                "Fotossensibilidade", "Cor", "Refração", "Tecnologia", "Antirreflexo", 
+                "Esférico", "Cilíndrico", "Adição", "Diâmetro"
             ])
 
-            for _ in range(1000000):
+            total_lines = 100000000
+            for _ in tqdm.tqdm(range(total_lines), desc="Progresso"):
                 fornecedor = random.choice(self.fornecedores)
                 marca = random.choice(self.marcas)
                 linha = random.choice(self.linhas)
@@ -62,11 +58,15 @@ class DadosGenerator:
                 diametro = random.choice(self.diametros)
 
                 writer.writerow([
-                    fornecedor, marca, linha, modelo, material, polaridade, 
-                    fotossensibilidade, cor, refracao, tecnologia, 
-                    antirreflexo, esferico, cilindrico, adicao, diametro
+                    fornecedor, marca, linha, modelo, material, 
+                    polaridade,fotossensibilidade, cor, 
+                    refracao, tecnologia, antirreflexo, 
+                    esferico, cilindrico, adicao, diametro
                 ])
+
+            file.flush()
 
 if __name__ == "__main__":
     generator = DadosGenerator()
     generator.generate_data("data/dados.csv")
+

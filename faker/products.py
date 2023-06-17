@@ -10,7 +10,11 @@ class DadosGenerator:
     """
 
     def __init__(self):
-        self.spark = SparkSession.builder.getOrCreate()
+        self.spark = SparkSession.builder \
+            .appName("products") \
+            .config("spark.driver.memory", "8g") \
+            .config("spark.executor.memory", "4g") \
+            .getOrCreate()
         self.fornecedores = ["Essilor", "Hoya", "Zeiss", "Rodenstock"]
         self.marcas = [f"Marca {i}" for i in range(1, 21)]
         self.linhas = [f"Linha {chr(i)}" for i in range(ord('A'), ord('Z')+1)]
@@ -50,7 +54,7 @@ class DadosGenerator:
             StructField("Diâmetro", IntegerType(), nullable=False)
         ])
 
-        total_lines = 100000000
+        total_lines = 10000000
 
         fake = Faker()
         rows = []

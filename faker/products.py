@@ -14,6 +14,7 @@ class DadosGenerator:
             .appName("products") \
             .config("spark.driver.memory", "8g") \
             .config("spark.executor.memory", "4g") \
+            .enableHiveSupport() \
             .getOrCreate()
         self.fornecedores = ["Essilor", "Hoya", "Zeiss", "Rodenstock"]
         self.marcas = [f"Marca {i}" for i in range(1, 21)]
@@ -54,6 +55,8 @@ class DadosGenerator:
             StructField("Diâmetro", IntegerType(), nullable=False)
         ])
 
+        self.spark.conf.set("mapreduce.fileoutputcommitter.marksuccessfuljobs", "false")
+        
         total_lines = 10000000
 
         fake = Faker()

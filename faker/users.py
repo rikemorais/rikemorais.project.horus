@@ -1,8 +1,7 @@
-import csv
-from faker import Faker
 import random
 from tqdm import tqdm
-
+from faker import Faker
+import pandas as pd
 
 class Registro:
     def __init__(self, cpf, nome, sobrenome, email, sexo, nacionalidade, idade, escolaridade):
@@ -14,7 +13,6 @@ class Registro:
         self.nacionalidade = nacionalidade
         self.idade = idade
         self.escolaridade = escolaridade
-
 
 class GeradorRegistros:
     def __init__(self):
@@ -64,20 +62,15 @@ class GeradorRegistros:
 
         return registros
 
-
 gerador = GeradorRegistros()
 
 total_registros = 10000000
 lista_registros = gerador.gerar_registros(total_registros)
 
-caminho_arquivo = 'data/users.csv'
+df = pd.DataFrame([vars(registro) for registro in lista_registros])
 
-with open(caminho_arquivo, 'w', newline='', encoding='utf-8') as arquivo_csv:
-    writer = csv.writer(arquivo_csv)
-    writer.writerow(['cpf', 'nome', 'sobrenome', 'email', 'sexo', 'nacionalidade', 'idade', 'escolaridade'])
+caminho_arquivo = '../data/users.parquet'
 
-    for registro in tqdm(lista_registros, desc='Gravando registros'):
-        writer.writerow([registro.cpf, registro.nome, registro.sobrenome, registro.email, registro.sexo,
-                         registro.nacionalidade, registro.idade, registro.escolaridade])
+df.to_parquet(caminho_arquivo, index=False)
 
-print("Arquivo CSV Salvo com Sucesso!")
+print("Arquivo Parquet Salvo com Sucesso!")

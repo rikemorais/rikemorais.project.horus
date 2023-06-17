@@ -1,3 +1,4 @@
+import os
 import random
 from pyspark.sql import SparkSession
 from faker import Faker
@@ -57,7 +58,7 @@ class DadosGenerator:
 
         self.spark.conf.set("mapreduce.fileoutputcommitter.marksuccessfuljobs", "false")
         
-        total_lines = 10000000
+        total_lines = 100000
 
         fake = Faker()
         rows = []
@@ -98,9 +99,17 @@ class DadosGenerator:
             rows.append(row)
 
         df = self.spark.createDataFrame(rows, schema)
-        df.write.parquet(output_file_path)
+        df.write.mode("overwrite").parquet(output_file_path)
+
+
+    def remove_crc(self) -> None:
+        path = "../data/products.parquet/"
+        for file in os.listdir(path):
+            if file.endswith(".crc"):
+                os.remove(os.path.join(path, file))
+
 
 if __name__ == "__main__":
     generator = DadosGenerator()
     generator.generate_data("../data/products.parquet")
-
+    generator.remove_crc()

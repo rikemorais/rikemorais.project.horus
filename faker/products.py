@@ -2,7 +2,8 @@ import os
 import random
 from pyspark.sql import SparkSession
 from faker import Faker
-from pyspark.sql.types import *
+from pyspark.sql.types import ( StructType, StringType, StructField, 
+                               DoubleType, IntegerType )
 from tqdm import tqdm
 
 class DadosGenerator:
@@ -60,7 +61,6 @@ class DadosGenerator:
         
         total_lines = 100000
 
-        fake = Faker()
         rows = []
         for _ in tqdm(range(total_lines), desc="Progresso"):
             fornecedor = random.choice(self.fornecedores)

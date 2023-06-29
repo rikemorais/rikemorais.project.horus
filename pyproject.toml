@@ -15,6 +15,7 @@ pyspark = "^3.4.0"
 tqdm = "^4.65.0"
 pymongo = "^4.3.3"
 faker = "^18.11.2"
+boto3 = "^1.26.163"
 
 
 [build-system]

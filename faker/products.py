@@ -59,7 +59,7 @@ class DadosGenerator:
 
         self.spark.conf.set("mapreduce.fileoutputcommitter.marksuccessfuljobs", "false")
         
-        total_lines = 100000
+        total_lines = 1000000
 
         rows = []
         for _ in tqdm(range(total_lines), desc="Progresso"):

@@ -17,6 +17,7 @@ pymongo = "^4.3.3"
 faker = "^18.11.2"
 boto3 = "^1.26.163"
 flake8 = "^6.0.0"
+pre-commit = "^3.3.3"
 
 
 [build-system]

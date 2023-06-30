@@ -1,7 +1,8 @@
 import os
 
-from pyspark.sql import SparkSession
 from pymongo import MongoClient
+from pyspark.sql import SparkSession
+
 
 # Conectar ao MongoDB
 client = MongoClient(os.environ["URI_MONGODB"])

@@ -1,0 +1,22 @@
+[flake8]
+min_python_version = 3.9.1
+max-line-length = 120
+max-complexity = 15
+ignore = W503 E203 E711 E722
+docstring-convention = google
+exclude =
+    .git,
+    .gitignore,
+    __pycache__,
+    doc,
+    dist
+    .github/*,
+    .venv/*,
+    ./dist/*,
+    *.yaml,
+    Makefile,
+    .flake8,
+    poetry.lock,
+    pyproject.toml,
+    *.md,
+    *.tf,

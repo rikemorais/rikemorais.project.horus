@@ -1,23 +1,25 @@
-import os 
+import os
 
-from pyspark.sql import SparkSession
 from pymongo import MongoClient
+from pyspark.sql import SparkSession
+
 
 # Conectar ao MongoDB
-client = MongoClient(os.environ['URI_MONGODB'])
-db = client['Testes']
-collection = db['Teste-001']
+client = MongoClient(os.environ["URI_MONGODB"])
+db = client["Testes"]
+collection = db["Teste-001"]
 
 # Criar uma Sessão do Spark
-spark = SparkSession.builder\
-    .master('local')\
-    .config('spark.driver.memory', '4g') \
-    .config('spark.executor.memory', '4g') \
-    .config('spark.driver.maxResultSize', '2g') \
+spark = (
+    SparkSession.builder.master("local")
+    .config("spark.driver.memory", "4g")
+    .config("spark.executor.memory", "4g")
+    .config("spark.driver.maxResultSize", "2g")
     .getOrCreate()
+)
 
 # Ler o arquivo Parquet
-dataframe = spark.read.parquet('../data/users.parquet/*.parquet')
+dataframe = spark.read.parquet("../data/users.parquet/*.parquet")
 
 # Converter o DataFrame para um RDD de dicionários
 rdd = dataframe.rdd.map(lambda row: row.asDict())

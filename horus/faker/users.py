@@ -1,8 +1,10 @@
 import random
-from tqdm import tqdm
+
 from faker import Faker
 from pyspark.sql import SparkSession
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType
+from pyspark.sql.types import IntegerType, StringType, StructField, StructType
+from tqdm import tqdm
+
 
 class Registro:
     def __init__(self, cpf, nome, sobrenome, email, sexo, nacionalidade, idade, escolaridade):
@@ -15,10 +17,11 @@ class Registro:
         self.idade = idade
         self.escolaridade = escolaridade
 
+
 class GeradorRegistros:
     def __init__(self):
         self.spark = SparkSession.builder.getOrCreate()
-        self.fake = Faker('pt_BR')
+        self.fake = Faker("pt_BR")
 
     def gerar_cpf(self):
         return self.fake.unique.random_number(digits=11)
@@ -33,7 +36,7 @@ class GeradorRegistros:
         return self.fake.email()
 
     def gerar_sexo(self):
-        return random.choice(['M', 'F'])
+        return random.choice(["M", "F"])
 
     def gerar_nacionalidade(self):
         return self.fake.country()
@@ -42,7 +45,7 @@ class GeradorRegistros:
         return random.randint(18, 99)
 
     def gerar_escolaridade(self):
-        return random.choice(['Ensino Fundamental', 'Ensino Médio', 'Ensino Superior'])
+        return random.choice(["Ensino Fundamental", "Ensino Médio", "Ensino Superior"])
 
     def gerar_registro(self):
         cpf = self.gerar_cpf()
@@ -58,34 +61,37 @@ class GeradorRegistros:
 
     def gerar_registros(self, total_registros):
         registros = []
-        for _ in tqdm(range(total_registros), desc='Progresso'):
+        for _ in tqdm(range(total_registros), desc="Progresso"):
             registro = self.gerar_registro()
             registros.append(registro)
 
         return registros
 
     def salvar_arquivo_parquet(self, registros, caminho_arquivo):
-        schema = StructType([
-            StructField("cpf", StringType(), nullable=False),
-            StructField("nome", StringType(), nullable=False),
-            StructField("sobrenome", StringType(), nullable=False),
-            StructField("email", StringType(), nullable=False),
-            StructField("sexo", StringType(), nullable=False),
-            StructField("nacionalidade", StringType(), nullable=False),
-            StructField("idade", IntegerType(), nullable=False),
-            StructField("escolaridade", StringType(), nullable=False)
-        ])
+        schema = StructType(
+            [
+                StructField("cpf", StringType(), nullable=False),
+                StructField("nome", StringType(), nullable=False),
+                StructField("sobrenome", StringType(), nullable=False),
+                StructField("email", StringType(), nullable=False),
+                StructField("sexo", StringType(), nullable=False),
+                StructField("nacionalidade", StringType(), nullable=False),
+                StructField("idade", IntegerType(), nullable=False),
+                StructField("escolaridade", StringType(), nullable=False),
+            ]
+        )
 
         df = self.spark.createDataFrame(registros, schema)
         df.write.parquet(caminho_arquivo, mode="overwrite")
 
         print("Arquivo Parquet Salvo com Sucesso!")
 
+
 gerador = GeradorRegistros()
 
 total_registros = 10000000
 lista_registros = gerador.gerar_registros(total_registros)
 
-caminho_arquivo = '../data/users.parquet'
+caminho_arquivo = "../data/users.parquet"
 
 gerador.salvar_arquivo_parquet(lista_registros, caminho_arquivo)

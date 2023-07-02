@@ -1,10 +1,11 @@
 import os
 import random
-from pyspark.sql import SparkSession
+
 from faker import Faker
-from pyspark.sql.types import ( StructType, StringType, StructField, 
-                               DoubleType, IntegerType )
+from pyspark.sql import SparkSession
+from pyspark.sql.types import DoubleType, IntegerType, StringType, StructField, StructType
 from tqdm import tqdm
+
 
 class DadosGenerator:
     """
@@ -12,15 +13,16 @@ class DadosGenerator:
     """
 
     def __init__(self):
-        self.spark = SparkSession.builder \
-            .appName("products") \
-            .config("spark.driver.memory", "8g") \
-            .config("spark.executor.memory", "4g") \
-            .enableHiveSupport() \
+        self.spark = (
+            SparkSession.builder.appName("products")
+            .config("spark.driver.memory", "8g")
+            .config("spark.executor.memory", "4g")
+            .enableHiveSupport()
             .getOrCreate()
+        )
         self.fornecedores = ["Essilor", "Hoya", "Zeiss", "Rodenstock"]
         self.marcas = [f"Marca {i}" for i in range(1, 21)]
-        self.linhas = [f"Linha {chr(i)}" for i in range(ord('A'), ord('Z')+1)]
+        self.linhas = [f"Linha {chr(i)}" for i in range(ord("A"), ord("Z") + 1)]
         self.modelos = [f"Modelo {i}" for i in range(1, 201)]
         self.materiais = [f"Material {i}" for i in range(1, 11)]
         self.polaridades = ["Sim", "Não"]
@@ -39,26 +41,28 @@ class DadosGenerator:
 
         :param output_file_path: Caminho do arquivo de saída.
         """
-        schema = StructType([
-            StructField("Fornecedor", StringType(), nullable=False),
-            StructField("Marca", StringType(), nullable=False),
-            StructField("Linha", StringType(), nullable=False),
-            StructField("Modelo", StringType(), nullable=False),
-            StructField("Material", StringType(), nullable=False),
-            StructField("Polaridade", StringType(), nullable=False),
-            StructField("Foto", StringType(), nullable=False),
-            StructField("Cor", StringType(), nullable=False),
-            StructField("Refração", DoubleType(), nullable=False),
-            StructField("Tecnologia", StringType(), nullable=False),
-            StructField("Antirreflexo", StringType(), nullable=False),
-            StructField("Esférico", DoubleType(), nullable=False),
-            StructField("Cilíndrico", DoubleType(), nullable=False),
-            StructField("Adição", DoubleType(), nullable=False),
-            StructField("Diâmetro", IntegerType(), nullable=False)
-        ])
+        schema = StructType(
+            [
+                StructField("Fornecedor", StringType(), nullable=False),
+                StructField("Marca", StringType(), nullable=False),
+                StructField("Linha", StringType(), nullable=False),
+                StructField("Modelo", StringType(), nullable=False),
+                StructField("Material", StringType(), nullable=False),
+                StructField("Polaridade", StringType(), nullable=False),
+                StructField("Foto", StringType(), nullable=False),
+                StructField("Cor", StringType(), nullable=False),
+                StructField("Refração", DoubleType(), nullable=False),
+                StructField("Tecnologia", StringType(), nullable=False),
+                StructField("Antirreflexo", StringType(), nullable=False),
+                StructField("Esférico", DoubleType(), nullable=False),
+                StructField("Cilíndrico", DoubleType(), nullable=False),
+                StructField("Adição", DoubleType(), nullable=False),
+                StructField("Diâmetro", IntegerType(), nullable=False),
+            ]
+        )
 
         self.spark.conf.set("mapreduce.fileoutputcommitter.marksuccessfuljobs", "false")
-        
+
         total_lines = 1000000
 
         rows = []
@@ -94,13 +98,12 @@ class DadosGenerator:
                 esferico,
                 cilindrico,
                 adicao,
-                diametro
+                diametro,
             )
             rows.append(row)
 
         df = self.spark.createDataFrame(rows, schema)
         df.write.mode("overwrite").parquet(output_file_path)
-
 
     def remove_crc(self) -> None:
         path = "../data/products.parquet/"

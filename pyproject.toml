@@ -72,6 +72,14 @@ use_parentheses = true
 ensure_newline_before_comments = true
 
 
+[tool.taskipy.tasks]
+lint = "black --check --diff . && isort --check --diff ."
+docs = "mkdocs serve"
+pre_test = "task lint"
+test = "pytest -s -x --cov=horus -vv"
+post_test = "coverage html"
+
+
 [tool.interrogate]
 ignore-init-method = false
 ignore-init-module = true

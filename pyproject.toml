@@ -37,6 +37,11 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 
+[tool.pytest.ini_options]
+pythonpath = "."
+addopts = "--doctest-modules"
+
+
 [tool.black]
 line-length = 120
 include = '\.pyi?$'

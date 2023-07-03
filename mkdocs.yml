@@ -8,3 +8,9 @@ theme:
   language: pt-BR
   logo: assets/logo.jpeg
   favicon: assets/logo.jpeg
+
+markdown_extensions: 
+  - attr_list
+
+extra_css:
+  - stylesheets/extra.css

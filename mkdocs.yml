@@ -1,1 +1,10 @@
-site_name: My Docs
+site_name: Horus
+repo_url: https://github.com/rikemorais/rikemorais.project.horus
+repo_name: Horus Project
+edit_uri: tree/main/docs
+
+theme:
+  name: material
+  language: pt-BR
+  logo: assets/logo.jpeg
+  favicon: assets/logo.jpeg

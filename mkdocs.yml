@@ -16,4 +16,7 @@ extra_css:
   - stylesheets/extra.css
 
 plugins: 
-  - mkdocstrings
+- mkdocstrings:
+    handlers:
+      python:
+        paths: [horus]
